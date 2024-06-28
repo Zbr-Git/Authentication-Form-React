@@ -1,8 +1,19 @@
-import { Formik } from "formik";
+import { Field, Formik, Form, ErrorMessage } from "formik";
 import { Link } from "react-router-dom";
+import * as yup from "yup";
 
 const Login = () => {
- 
+  const LoginSchema = yup.object().shape({
+    email: yup.string().email("Invalid email").required("Required"),
+    password: yup
+      .string()
+      .min(8, "Password must be 8 characters long")
+      .matches(/[0-9]/, "Password requires a number")
+      .matches(/[a-z]/, "Password requires a lowercase letter")
+      .matches(/[A-Z]/, "Password requires an uppercase letter")
+      .matches(/[^\w]/, "Password requires a symbol"),
+  });
+
   return (
     <div className="white:bg-gray-950 flex min-h-screen w-full items-center justify-center">
       <div className="bg-white-100 max-w-md rounded-lg px-8 py-6 shadow-md">
@@ -12,35 +23,13 @@ const Login = () => {
 
         <Formik
           initialValues={{ email: "", password: "" }}
-          validate={(values) => {
-            const errors = {};
-            if (!values.email) {
-              errors.email = "Required";
-            } else if (
-              !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-            ) {
-              errors.email = "Invalid email address";
-            }
-            return errors;
-          }}
-          onSubmit={(values, { setSubmitting }) => {
-            setTimeout(() => {
-              alert(JSON.stringify(values, null, 2));
-              setSubmitting(false);
-            }, 400);
+          validationSchema={LoginSchema}
+          onSubmit={(values) => {
+            console.log(values);
           }}
         >
-          {({
-            values,
-            errors,
-            touched,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            isSubmitting,
-            /* and other goodies */
-          }) => (
-            <form>
+          {({ isSubmitting }) => (
+            <Form>
               <div className="mb-4">
                 <label
                   htmlFor="email"
@@ -48,18 +37,15 @@ const Login = () => {
                 >
                   Email Address
                 </label>
-                <input
+                <Field
                   type="email"
                   id="email"
                   name="email"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.email}
                   className="w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
                   placeholder="your@email.com"
-                  
                 />
               </div>
+                <ErrorMessage name="email" component="div" />
               <div className="mb-4">
                 <label
                   htmlFor="password"
@@ -67,17 +53,13 @@ const Login = () => {
                 >
                   Password
                 </label>
-                {errors.email && touched.email && errors.email}
-                <input
+
+                <Field
                   type="password"
                   id="password"
                   name="password"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.password}
                   className="w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
                   placeholder="Enter your password"
-                  
                   autoComplete="on"
                 />
                 <Link
@@ -86,14 +68,15 @@ const Login = () => {
                 >
                   Forgot Password?
                 </Link>
+                <ErrorMessage name="password" component="div" />
               </div>
               <div className="mb-4 flex items-center justify-between">
                 <div className="flex items-center">
-                  <input
+                  <Field
                     type="checkbox"
+                    name="checkbox"
                     id="remember"
                     className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:outline-none focus:ring-indigo-500"
-                    defaultChecked
                   />
                   <label
                     htmlFor="remember"
@@ -116,7 +99,7 @@ const Login = () => {
               >
                 Login
               </button>
-            </form>
+            </Form>
           )}
         </Formik>
       </div>
