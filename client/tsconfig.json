@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+      "target": "ES6",  // Adjust based on your project's requirements
+      "lib": ["dom", "dom.iterable", "esnext"],
+      "allowJs": true,  // Allow JavaScript files to be included
+      "skipLibCheck": true,  // Optional: Skip type checking of library files
+      "esModuleInterop": true,  // Enables experimental ES module interop
+      "allowSyntheticDefaultImports": true,  // Allow synthetic default imports
+      "strict": true,  // Enable strict mode for type safety
+      "forceConsistentCasingInFileNames": true,  // Enforce consistent file name casing
+      "noFallthroughCasesInSwitch": true,  // Warn about fall-through cases in switch statements
+      "module": "esnext",  // Use the ESNext module system
+      "moduleResolution": "node",  // Use Node.js module resolution
+      "resolveJsonModule": true,  // Resolve JSON modules
+      "isolatedModules": true,  // Enable type checking for isolated modules
+      "jsx": "react-jsx",  // Use JSX factory (adjust if using a different library)
+      "declaration": false,  // Don't generate declaration files
+      "outDir": "build"  // Optional: Output directory for compiled files
+    },
+    "include": ["src"]  // Include files from the "src" directory for type checking
+  }
+  
